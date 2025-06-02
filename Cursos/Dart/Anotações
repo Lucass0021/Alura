@@ -1,7 +1,6 @@
 # Anotações Módulo 2:
 
 // Tipos de Variáveis
-/*
 
 - Tipos Primitivos: Elementos mais básicos para armazenar valores simples.
 
@@ -40,6 +39,136 @@ print("Primeiro nome da lista: ${nomes[0]}");
 print("Telefone da Ana: ${agenda['Ana']}");
 print("Números únicos no conjunto: $numerosUnicos");
 
-*/
-
 # Anotações Módulo 4:
+
+No Módulo 4, foi recomendada a leitura de um artigo "Conhecendo as funções das listas em Dart"
+link: https://codeburst.io/top-10-array-utility-methods-you-should-know-dart-feb2648ee3a2
+
+Título do Artigo: "Top 10 Array utility methods you should know (Dart)"
+
+1. forEach()
+Executa uma função em cada elemento da lista.
+
+var fruits = [‘banana’, ‘pineapple’, ‘watermelon’];
+fruits.forEach((fruit) => print(fruit)); // => banana pineapple watermelon
+
+*Nota: É criada uma lista chamada fruits. Em seguida, a função forEach() é utilizada para executar uma função anônima para cada elemento da lista. 
+Nesse caso, para cada fruit dentro da lista fruits, o valor de fruit é impresso no console.
+
+2. map()
+Produz uma nova lista após transformar cada elemento em uma lista fornecida.
+
+var mappedFruits = fruits.map((fruit) => ‘I love $fruit’).toList();
+print(mappedFruits); // => ['I love banana', ‘I love pineapple’, ‘I love watermelon’]
+
+*Nota: A função map() é utilizada para transformar cada elemento da lista original. No exemplo, cada fruit da lista fruits é transformado na string 'I love $fruit'. 
+O resultado é um Iterable, por isso é necessário usar .toList() ao final para converter o resultado em uma nova lista chamada mappedFruits.
+
+A função map() é ideal quando você precisa aplicar uma transformação a cada item da lista e obter uma nova lista com os resultados, sem modificar a lista original.
+
+3. contains()
+Verifica para confirmar se o elemento fornecido está na lista.
+
+var numbers = [1, 3, 2, 5, 4];
+print(numbers.contains(2)); // => true
+
+*Nota: A função contains() verifica se um determinado elemento está presente na lista. 
+No exemplo, ela verifica se o número 2 está presente na lista numbers. Se o elemento for encontrado, retorna true; caso contrário, retorna false. 
+
+4. sort()
+Ordena os elementos com base na função de ordenação fornecida
+
+numbers.sort((num1, num2) => num1 - num2); // => [1, 2, 3, 4, 5]
+
+*Nota: Nota: A função sort() ordena os elementos da lista no local (ou seja, modifica a lista original) com base na lógica definida na função de comparação. 
+No exemplo, a lista numbers é ordenada em ordem crescente usando (num1, num2) => num1 - num2, que segue a lógica:
+
+• Se o resultado for negativo, num1 vem antes de num2;
+• Se for positivo, num1 vem depois de num2;
+• Se for zero, a ordem dos elementos não muda.
+
+5. reduce(),fold()
+Compacta os elementos em um único valor, usando a função fornecida.
+
+var sum = numbers.reduce((curr, next) => curr + next);
+print(sum); // => 15
+const initialValue = 10;
+var sum2 = numbers.fold(initialValue, (curr, next) => curr + next);
+print(sum2); // => 25
+
+*Nota: As funções reduce() e fold() são utilizadas para combinar (ou reduzir) os elementos de uma lista em um único valor, aplicando uma função acumuladora.
+
+• reduce() aplica a função acumuladora a partir do primeiro elemento da lista, acumulando os resultados. No exemplo, ela soma todos os números da lista numbers, retornando 15.
+• fold() funciona de forma semelhante, mas permite definir um valor inicial para o acumulador. No exemplo, o valor inicial é 10, então o resultado da soma será 25 (10 + 1 + 3 + 2 + 5 + 4).
+
+6. every()
+Confirma que cada elemento satisfaz o teste.
+
+List<Map<String, dynamic>> users = [
+  { “name”: ‘John’, “age”: 18 },
+  { “name”: ‘Jane’, “age”: 21 },
+  { “name”: ‘Mary’, “age”: 23 },
+];
+var is18AndOver = users.every((user) => user[“age”] >= 18);
+print(is18AndOver); // => true
+var hasNamesWithJ = users.every((user) => user[“name”].startsWith('J'));
+print(hasNamesWithJ); // => false
+
+*Nota: A função every() verifica se todos os elementos da lista satisfazem uma determinada condição (função de teste).
+
+• No primeiro exemplo, users.every((user) => user["age"] >= 18) retorna true, pois todos os usuários têm 18 anos ou mais.
+• No segundo exemplo, users.every((user) => user["name"].startsWith('J')) retorna false, pois nem todos os nomes começam com a letra 'J'.
+
+Se ao menos um elemento não atender à condição, every() retorna false. Essa função é útil para validações em massa.
+
+7. where(),firstWhere(),singleWhere()
+Retorna uma coleção de elementos que satisfazem o teste.
+
+var over21s = users.where((user) => user["age"] > 21);
+print(over21s.length); // => 1
+var nameJ = users.firstWhere((user) => user["name"].startsWith('J'), orElse: () => {});
+print(nameJ); // => {name: John, age: 18}
+var under18s = users.singleWhere((user) => user["age"] < 18, orElse: () => {});
+print(under18s.isEmpty ? null : under18s); // => null
+
+*Nota: 
+• where() retorna um Iterable contendo todos os elementos que satisfazem a condição fornecida. No exemplo, over21s contém os usuários com idade maior que 21.
+• firstWhere() retorna o primeiro elemento que satisfaz a condição, ou o valor fornecido em orElse se nenhum elemento for encontrado. Como não é permitido retornar null em orElse, um mapa vazio {} foi usado como fallback.
+• singleWhere() retorna o único elemento que satisfaz a condição. Se nenhum ou mais de um elemento satisfizerem, retorna o valor em orElse. Novamente, {} foi usado para evitar erro, e depois o resultado é verificado para saber se é vazio e, nesse caso, tratado como null.
+
+8. take(),skip()
+Retorna uma coleção ao incluir ou pular elementos.
+
+var fiboNumbers = [1, 2, 3, 5, 8, 13, 21];
+print(fiboNumbers.take(3).toList()); // => [1, 2, 3]
+print(fiboNumbers.skip(5).toList()); // => [13, 21]
+print(fiboNumbers.take(3).skip(2).take(1).toList()); // => [3]
+
+*Nota: 
+• take(n) retorna os primeiros n elementos da lista, criando uma nova coleção.
+• skip(n) pula os primeiros n elementos e retorna o restante em uma nova coleção.
+Essas funções podem ser encadeadas para criar seleções específicas; por exemplo, take(3).skip(2).take(1) pega os 3 primeiros elementos, pula os 2 primeiros desses e então pega 1 elemento, resultando no terceiro elemento original.
+
+9. List.from()
+Cria uma nova lista a partir da coleção fornecida.
+
+var clonedFiboNumbers = List.from(fiboNumbers);
+print(‘Cloned list: $clonedFiboNumbers’);
+
+*Nota: A função List.from() cria uma nova lista independente a partir de qualquer coleção (como outra lista). 
+Isso significa que alterações na nova lista não afetam a lista original, pois é uma cópia superficial dos elementos.
+
+10. expand()
+Expande cada elemento em zero ou mais elementos.
+
+var pairs = [[1, 2], [3, 4]];
+var flattened = pairs.expand((pair) => pair).toList();
+print(‘Flattened result: $flattened’); // => [1, 2, 3, 4]
+var input = [1, 2, 3];
+var duplicated = input.expand((i) => [i, i]).toList();
+print(duplicated); // => [1, 1, 2, 2, 3, 3]
+
+*Nota: A função expand() transforma cada elemento de uma coleção em zero ou mais elementos de outra coleção e depois “achata” (flatten) o resultado em uma única lista.
+No primeiro exemplo, pairs é uma lista de listas, e expand((pair) => pair) “desempacota” cada sublista para formar uma lista única com todos os elementos.
+No segundo exemplo, para cada número da lista input, expand cria uma nova lista duplicando o elemento, e o resultado final contém cada número repetido duas vezes consecutivas.
+
